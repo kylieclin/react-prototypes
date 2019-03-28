@@ -5,11 +5,10 @@ class FormatTime extends Component{
         super(props);
 
         this.timerStyle = {
-            display: 'inline-block',
+            display: 'block',
             position: 'relative',
-            left: '65%',
-            transform: 'translate(-50%)',
-            width: '383px'
+            width: '200px',
+            margin: 'auto'
         }
 
     }
@@ -40,7 +39,7 @@ class FormatTime extends Component{
     render(){
         const {hour, min, sec, ms} = this.millisecondsToTime();
         return(
-            <div style={this.timerStyle}>
+            <div style={this.timerStyle} >
                 <h1>{this.leadingZero(hour)}:{this.leadingZero(min)}:{this.leadingZero(sec)}.{this.trailingZero(ms)}</h1>
             </div>
             

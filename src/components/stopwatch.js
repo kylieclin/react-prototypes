@@ -7,13 +7,14 @@ class Stopwatch extends Component{
         this.state = {
             status: 'stopped',
             start: null,
-            elapsed: 0
+            elapsed: 0,
+            lap: []
         };
         this.start = this.start.bind(this);
         this.stop = this.stop.bind(this);
         this.update = this.update.bind(this);
         this.reset = this.reset.bind(this);
-        this.showLap = this.showLap.bind(this);
+        this.lap = this.lap.bind(this);
     }
     start(){
         const {start, elapsed} = this.state;
@@ -36,7 +37,8 @@ class Stopwatch extends Component{
         this.setState({
             status: 'stopped',
             start: null,
-            elapsed: 0
+            elapsed: 0,
+            lap: []
         })
     }
     update(){
@@ -49,11 +51,16 @@ class Stopwatch extends Component{
             setTimeout(this.update, 10);
         } 
     }
-    showLap(){
-      return   
+    lap(){
+        if(this.state.status === 'running'){
+            this.setState({
+                lap: [...this.state.lap, this.state.elapsed]
+            })   
+        }
+     
     }
     render(){
-        const {status, start, elapsed} = this.state;
+        const {status, elapsed, lap} = this.state;
         return (
             <div className="jumbotron">
                 <FormatTime time={elapsed} className="display-3"/>
@@ -61,10 +68,15 @@ class Stopwatch extends Component{
                 <p className="lead text-center">{status}</p>
                 <p className="text-center">
                     <button onClick={this.start} className="btn btn-outline-success mx-3">Start</button>
+                    <button onClick={this.lap} className="btn btn-outline-info mx-3">Lap</button>
                     <button onClick={this.stop} className="btn btn-outline-danger  mx-3">Stop</button>
-                    <button onClick={this.reset} className="btn btn-outline-warning mx-3">Reset</button>
-                    <button onClick={this.showLap} className="btn btn-outline-info mx-3">Lap</button>
+                    <button onClick={this.reset} className="btn btn-outline-warning mx-3">Reset</button>   
                 </p>
+                <div className="lap text-center">
+                    {lap.map((time, index)=>{
+                        return <FormatTime time={time} key={index}/>
+                    })}
+                </div>
             </div>
         )
     }
